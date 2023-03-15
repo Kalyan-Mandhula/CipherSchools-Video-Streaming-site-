@@ -16,7 +16,7 @@ const ReplyForComment = async (req, res, next) => {
     try {
       let newComment = new Comment({ ...req.body, user: req.user , isReply : true});
       await newComment.save()
-      let comment = await Comment.findByIdAndUpdate(req.params.id,{$push : { replies : newComment} } ,{new:true})
+      let comment = await Comment.findByIdAndUpdate(req.params.id,{$push : { replies : { $each: [newComment], $position: req.params.index } } } ,{new:true})
       res.status(200).send(comment);
     } catch (err) {
       next(err);

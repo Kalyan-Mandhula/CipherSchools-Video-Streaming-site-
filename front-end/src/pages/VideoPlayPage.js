@@ -51,9 +51,9 @@ function VideoPage() {
     }
   };
 
-  const UploadReply = async (CommentDetails, id) => {
+  const UploadReply = async (CommentDetails, id,index) => {
     if (userId) {
-      await axios.post(`/api/comments/${id}`, { ...CommentDetails });
+      await axios.post(`/api/comments/${id}/${index}`, { ...CommentDetails });
     }
   };
 
@@ -84,7 +84,7 @@ function VideoPage() {
     }
   };
 
-  const SubmitReply = async (event, id) => {
+  const SubmitReply = async (event, id,idx) => {
     event.preventDefault();
     event.stopPropagation();
     const CommentDetails = {
@@ -93,7 +93,7 @@ function VideoPage() {
       isReply: true,
     };
     if (event.currentTarget.checkValidity() && CommentDetails.desc) {
-      UploadReply(CommentDetails, id)
+      UploadReply(CommentDetails, id,idx)
         .then((res) => setCommentAdded(!commentAdded))
         .catch((err) => console.log(err));
       setShowReplyInput(false);
@@ -376,7 +376,7 @@ function VideoPage() {
                               })
                             }
                           >
-                            <u>Reply</u>
+                            <u style={{ cursor: "pointer" }}>Reply</u>
                           </span>
                         }
                         {showReplyInput === comment._id ? (
@@ -389,14 +389,14 @@ function VideoPage() {
                                 placeholder="Add a comment"
                                 onKeyDown={(e) => {
                                   if (e.keyCode === 13) {
-                                    SubmitReply(e, comment._id);
+                                    SubmitReply(e, comment._id,0);
                                   }
                                 }}
                               />
                               <Button
                                 variant="primary"
                                 type="submit"
-                                onClick={(e) => SubmitReply(e, comment._id)}
+                                onClick={(e) => SubmitReply(e, comment._id,0)}
                               >
                                 Submit
                               </Button>
@@ -429,7 +429,7 @@ function VideoPage() {
                                     })
                                   }
                                 >
-                                  <u>Reply</u>
+                                  <u style={{ cursor: "pointer" }}>Reply</u>
                                 </span>
                               }
                               {showReplyInput === reply._id ? (
@@ -442,7 +442,7 @@ function VideoPage() {
                                       placeholder="Add a comment"
                                       onKeyDown={(e) => {
                                         if (e.keyCode === 13) {
-                                          SubmitReply(e, comment._id);
+                                          SubmitReply(e, comment._id,idx+1);
                                         }
                                       }}
                                     />
@@ -450,7 +450,7 @@ function VideoPage() {
                                       variant="primary"
                                       type="submit"
                                       onClick={(e) =>
-                                        SubmitReply(e, comment._id)
+                                        SubmitReply(e, comment._id,idx+1)
                                       }
                                     >
                                       Submit
