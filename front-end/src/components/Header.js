@@ -119,9 +119,9 @@ function Header() {
                 >
                   <Form.Control
                     type="text"
-                    className="rounded-0 rounded-start h-100  Search SearchBar"
+                    className="rounded-0 rounded-start h-100  Search SearchBar "
                     placeholder="Search ..."
-                    style={{ border: "none" }}
+                    style={{ border: "none"   }}
                     onKeyDown={(e) => {
                       if (e.keyCode === 13) {
                         SearchVideos(e);

@@ -40,7 +40,13 @@ const ReplyForComment = async (req, res, next) => {
 
  const GetComments = async (req, res, next) => {
   try {
-    const comments = await Comment.find({ videoId: req.params.videoId }).populate("replies").populate("user")
+    const comments = await Comment.find({ videoId: req.params.videoId }).populate({
+      path: 'replies',
+      populate: {
+        path: 'user',
+        model: 'User'
+      }}
+    ).populate("user")
     res.status(200).json(comments);
   } catch (err) {
     next(err);
